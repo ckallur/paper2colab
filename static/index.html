@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF → Colab Tutorial</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#4285F4"/>
+          <path d="M8 10h10M8 14h10M8 18h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="22" cy="22" r="6" fill="#34A853"/>
+          <path d="M20 22l1.5 1.5L24 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Paper<b>2Colab</b></span>
+      </div>
+      <p class="tagline">Turn any research paper into a runnable Colab tutorial — powered by GPT-4o</p>
+    </div>
+  </header>
+
+  <main>
+    <form id="convert-form" novalidate>
+
+      <!-- Step 1: API Key -->
+      <section class="card" id="step-api">
+        <div class="step-badge">1</div>
+        <h2>Enter your OpenAI API Key</h2>
+        <p class="hint">Your key is sent directly to OpenAI and never stored on our server.</p>
+        <div class="input-group">
+          <input
+            type="password"
+            id="api-key"
+            placeholder="sk-..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="button" class="toggle-vis" id="toggle-key" title="Show / hide key">
+            <svg id="eye-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-error" id="api-key-error"></div>
+      </section>
+
+      <!-- Step 2: Upload PDF -->
+      <section class="card" id="step-upload">
+        <div class="step-badge">2</div>
+        <h2>Upload your Research Paper PDF</h2>
+        <p class="hint">Text-based PDFs work best. Scanned images won't extract correctly.</p>
+
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="pdf-input" accept=".pdf" hidden />
+          <div class="drop-content" id="drop-content">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <polyline points="9 15 12 12 15 15"/>
+            </svg>
+            <p class="drop-label">Drag & drop a PDF here</p>
+            <span class="drop-sub">or</span>
+            <button type="button" class="btn-secondary" id="browse-btn">Browse file</button>
+          </div>
+          <div class="file-selected" id="file-selected" hidden>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            <div class="file-info">
+              <span class="file-name" id="file-name"></span>
+              <span class="file-size" id="file-size"></span>
+            </div>
+            <button type="button" class="remove-file" id="remove-file" title="Remove">✕</button>
+          </div>
+        </div>
+        <div class="field-error" id="pdf-error"></div>
+      </section>
+
+      <!-- Convert Button -->
+      <button type="submit" class="btn-primary" id="convert-btn">
+        <span id="btn-text">Convert to Colab Tutorial</span>
+        <span id="btn-spinner" class="spinner" hidden></span>
+      </button>
+
+      <!-- Progress / Status -->
+      <div class="status-box" id="status-box" hidden>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="status-msg" id="status-msg">Reading PDF...</p>
+      </div>
+
+      <!-- Error -->
+      <div class="alert alert-error" id="global-error" hidden>
+        <strong>Error:</strong> <span id="error-text"></span>
+      </div>
+
+      <!-- Success / Download -->
+      <div class="alert alert-success" id="success-box" hidden>
+        <div class="success-inner">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div>
+            <strong>Your Colab tutorial is ready!</strong>
+            <p>Open the downloaded <code>.ipynb</code> file in Google Colab or Jupyter to get started.</p>
+          </div>
+        </div>
+        <a id="download-link" class="btn-download" href="#" download>
+          Download Notebook (.ipynb)
+        </a>
+      </div>
+
+    </form>
+  </main>
+
+  <footer>
+    <p>Powered by <a href="https://platform.openai.com/" target="_blank" rel="noopener">OpenAI GPT-4o</a> &amp; Flask &nbsp;|&nbsp; PDF parsing by pdfplumber</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
